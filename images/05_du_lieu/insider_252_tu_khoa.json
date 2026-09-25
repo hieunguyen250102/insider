@@ -1,0 +1,506 @@
+[
+  {
+    "id": "001",
+    "so_mat_sau": 1,
+    "tu_khoa": [
+      "Sấm sét",
+      "Dâu tây",
+      "Kính thiên văn",
+      "Nấu ăn",
+      "Bún bò",
+      "Dưa hấu"
+    ]
+  },
+  {
+    "id": "002",
+    "so_mat_sau": 1,
+    "tu_khoa": [
+      "Bạch tuộc",
+      "Bác sĩ",
+      "Cà phê",
+      "Thư viện",
+      "Khăn tắm",
+      "Bể bơi"
+    ]
+  },
+  {
+    "id": "003",
+    "so_mat_sau": 1,
+    "tu_khoa": [
+      "Thủy triều",
+      "Cây xương rồng",
+      "Búa",
+      "Ma cà rồng",
+      "Rễ cây",
+      "Gương soi"
+    ]
+  },
+  {
+    "id": "004",
+    "so_mat_sau": 1,
+    "tu_khoa": [
+      "Nhà khoa học",
+      "Sở thú",
+      "Nàng tiên cá",
+      "Lều",
+      "Vạn Lý Trường Thành",
+      "Bỏng ngô"
+    ]
+  },
+  {
+    "id": "005",
+    "so_mat_sau": 1,
+    "tu_khoa": [
+      "Cà chua",
+      "Chăn",
+      "Quả nho",
+      "Sứa",
+      "Bản đồ",
+      "La bàn"
+    ]
+  },
+  {
+    "id": "006",
+    "so_mat_sau": 1,
+    "tu_khoa": [
+      "Chim sẻ",
+      "Trường học",
+      "Tưới cây",
+      "Nồi cơm điện",
+      "Lò vi sóng",
+      "Phù thủy"
+    ]
+  },
+  {
+    "id": "007",
+    "so_mat_sau": 1,
+    "tu_khoa": [
+      "Ca sĩ",
+      "Sa mạc",
+      "Trực thăng",
+      "Nông dân",
+      "Sầu riêng",
+      "Phở"
+    ]
+  },
+  {
+    "id": "008",
+    "so_mat_sau": 2,
+    "tu_khoa": [
+      "Ủng",
+      "Robot",
+      "Bơi lội",
+      "Bút chì",
+      "Nhảy dây",
+      "Găng tay"
+    ]
+  },
+  {
+    "id": "009",
+    "so_mat_sau": 2,
+    "tu_khoa": [
+      "Quả táo",
+      "Tủ lạnh",
+      "Quả cam",
+      "Gỏi cuốn",
+      "Đồng hồ đeo tay",
+      "Cờ vua"
+    ]
+  },
+  {
+    "id": "010",
+    "so_mat_sau": 2,
+    "tu_khoa": [
+      "Cầu vồng",
+      "Dây chuyền",
+      "Đèn bàn",
+      "Đấu kiếm",
+      "Quả chuối",
+      "Con chó"
+    ]
+  },
+  {
+    "id": "011",
+    "so_mat_sau": 2,
+    "tu_khoa": [
+      "Bông tuyết",
+      "Điện thoại",
+      "Bưu thiếp",
+      "Leo núi",
+      "Họa sĩ",
+      "Sáo"
+    ]
+  },
+  {
+    "id": "012",
+    "so_mat_sau": 2,
+    "tu_khoa": [
+      "Áo mưa",
+      "Cầu lông",
+      "Lễ tốt nghiệp",
+      "Vali",
+      "Làm vườn",
+      "Cơm tấm"
+    ]
+  },
+  {
+    "id": "013",
+    "so_mat_sau": 2,
+    "tu_khoa": [
+      "Chim công",
+      "Thước kẻ",
+      "Hoa hướng dương",
+      "Giường ngủ",
+      "Vòng tay",
+      "Đánh răng"
+    ]
+  },
+  {
+    "id": "014",
+    "so_mat_sau": 2,
+    "tu_khoa": [
+      "Cơn bão",
+      "Con rồng",
+      "Phong bì",
+      "Thợ may",
+      "Hồ Gươm",
+      "Xe cứu thương"
+    ]
+  },
+  {
+    "id": "015",
+    "so_mat_sau": 3,
+    "tu_khoa": [
+      "Mặt trời",
+      "Phi công",
+      "Núi lửa",
+      "Nhẫn",
+      "Tết Nguyên đán",
+      "Đàn vi ô lông"
+    ]
+  },
+  {
+    "id": "016",
+    "so_mat_sau": 3,
+    "tu_khoa": [
+      "Lễ hội",
+      "Quét nhà",
+      "Chạy bộ",
+      "Tàu ngầm",
+      "Vẽ tranh",
+      "Lược"
+    ]
+  },
+  {
+    "id": "017",
+    "so_mat_sau": 3,
+    "tu_khoa": [
+      "Bánh mì",
+      "Lá cây",
+      "Khăn quàng cổ",
+      "Bươm bướm",
+      "Sương mù",
+      "Công viên"
+    ]
+  },
+  {
+    "id": "018",
+    "so_mat_sau": 3,
+    "tu_khoa": [
+      "Gió",
+      "Hộ chiếu",
+      "Máy bay",
+      "Đàn ghi ta",
+      "Lính cứu hỏa",
+      "Kem"
+    ]
+  },
+  {
+    "id": "019",
+    "so_mat_sau": 3,
+    "tu_khoa": [
+      "Chụp ảnh",
+      "Vịnh Hạ Long",
+      "Rong biển",
+      "Giặt quần áo",
+      "Rạp chiếu phim",
+      "Hạt giống"
+    ]
+  },
+  {
+    "id": "020",
+    "so_mat_sau": 3,
+    "tu_khoa": [
+      "Cá ngựa",
+      "Cá mập",
+      "Con ong",
+      "Hoa hồng",
+      "Khinh khí cầu",
+      "Kỳ lân"
+    ]
+  },
+  {
+    "id": "021",
+    "so_mat_sau": 3,
+    "tu_khoa": [
+      "Tai nghe",
+      "Chùa Một Cột",
+      "Gói quà",
+      "Hoa sen",
+      "Bắp cải",
+      "Mũ bảo hiểm"
+    ]
+  },
+  {
+    "id": "022",
+    "so_mat_sau": 4,
+    "tu_khoa": [
+      "Tài xế",
+      "Con tem",
+      "Con mèo",
+      "Chim gõ kiến",
+      "Cây thông",
+      "Chợ"
+    ]
+  },
+  {
+    "id": "023",
+    "so_mat_sau": 4,
+    "tu_khoa": [
+      "Kim tự tháp",
+      "Cá heo",
+      "Rửa bát",
+      "Thợ xây",
+      "Ngư dân",
+      "Phi hành gia"
+    ]
+  },
+  {
+    "id": "024",
+    "so_mat_sau": 4,
+    "tu_khoa": [
+      "Bảo tàng",
+      "Cặp sách",
+      "Nước mía",
+      "Thanh long",
+      "Nấm",
+      "Ống nhòm"
+    ]
+  },
+  {
+    "id": "025",
+    "so_mat_sau": 4,
+    "tu_khoa": [
+      "Người tuyết",
+      "Giáo viên",
+      "Xà phòng",
+      "Siêu thị",
+      "Nước dừa",
+      "Cây tre"
+    ]
+  },
+  {
+    "id": "026",
+    "so_mat_sau": 4,
+    "tu_khoa": [
+      "Thác nước",
+      "Lập trình viên",
+      "Xe buýt",
+      "Bàn phím",
+      "Đầu bếp",
+      "Sữa đậu nành"
+    ]
+  },
+  {
+    "id": "027",
+    "so_mat_sau": 4,
+    "tu_khoa": [
+      "Kiến trúc sư",
+      "Ổ khóa",
+      "Cà rốt",
+      "Quả bơ",
+      "Gối",
+      "Con thỏ"
+    ]
+  },
+  {
+    "id": "028",
+    "so_mat_sau": 4,
+    "tu_khoa": [
+      "Sữa chua",
+      "Dưa chuột",
+      "Chuồn chuồn",
+      "Máy tính xách tay",
+      "Bệnh viện",
+      "Vệ tinh"
+    ]
+  },
+  {
+    "id": "029",
+    "so_mat_sau": 5,
+    "tu_khoa": [
+      "Đèn pin",
+      "Hang động",
+      "Ô tô",
+      "Máy sấy tóc",
+      "Con kiến",
+      "Hoa tai"
+    ]
+  },
+  {
+    "id": "030",
+    "so_mat_sau": 5,
+    "tu_khoa": [
+      "Động đất",
+      "Thuyền buồm",
+      "Câu cá",
+      "Trạm vũ trụ",
+      "Bóng bàn",
+      "Chảo"
+    ]
+  },
+  {
+    "id": "031",
+    "so_mat_sau": 5,
+    "tu_khoa": [
+      "Quả xoài",
+      "Mưa đá",
+      "Vé tàu",
+      "Hươu cao cổ",
+      "Bóng đá",
+      "Rèm cửa"
+    ]
+  },
+  {
+    "id": "032",
+    "so_mat_sau": 5,
+    "tu_khoa": [
+      "Xe đạp",
+      "Trà sữa",
+      "Tủ quần áo",
+      "Nước cam",
+      "Kìm",
+      "Khách sạn"
+    ]
+  },
+  {
+    "id": "033",
+    "so_mat_sau": 5,
+    "tu_khoa": [
+      "Kẹo bông",
+      "Bãi biển",
+      "Con nhện",
+      "Vườn bách thảo",
+      "Bánh sinh nhật",
+      "Máy ảnh"
+    ]
+  },
+  {
+    "id": "034",
+    "so_mat_sau": 5,
+    "tu_khoa": [
+      "Đũa",
+      "Bảng đen",
+      "Kính lúp",
+      "Khoai tây",
+      "Tháp Eiffel",
+      "Mặt trăng"
+    ]
+  },
+  {
+    "id": "035",
+    "so_mat_sau": 5,
+    "tu_khoa": [
+      "Quả dứa",
+      "Trượt băng",
+      "Cú mèo",
+      "Xe cứu hỏa",
+      "Vở học sinh",
+      "Ấm đun nước"
+    ]
+  },
+  {
+    "id": "036",
+    "so_mat_sau": 6,
+    "tu_khoa": [
+      "Bắn cung",
+      "Bàn chải đánh răng",
+      "Thợ cắt tóc",
+      "Chìa khóa",
+      "Kèn trumpet",
+      "Xe máy"
+    ]
+  },
+  {
+    "id": "037",
+    "so_mat_sau": 6,
+    "tu_khoa": [
+      "Tên lửa",
+      "Rêu",
+      "Đại bàng",
+      "Khu cắm trại",
+      "Diễn viên",
+      "Ti vi"
+    ]
+  },
+  {
+    "id": "038",
+    "so_mat_sau": 6,
+    "tu_khoa": [
+      "Đọc sách",
+      "Rùa biển",
+      "Sân bay",
+      "Bưu điện",
+      "Đảo",
+      "Quả dừa"
+    ]
+  },
+  {
+    "id": "039",
+    "so_mat_sau": 6,
+    "tu_khoa": [
+      "Nhiếp ảnh gia",
+      "Sinh nhật",
+      "Cục tẩy",
+      "Ốc sên",
+      "Tết Trung thu",
+      "Nhà ga"
+    ]
+  },
+  {
+    "id": "040",
+    "so_mat_sau": 6,
+    "tu_khoa": [
+      "Con voi",
+      "Đám cưới",
+      "Đàn piano",
+      "Nhà hàng",
+      "Bánh chưng",
+      "Trống"
+    ]
+  },
+  {
+    "id": "041",
+    "so_mat_sau": 6,
+    "tu_khoa": [
+      "Sân vận động",
+      "Bóng rổ",
+      "Kéo",
+      "Tua vít",
+      "Nhật thực",
+      "Bí đỏ"
+    ]
+  },
+  {
+    "id": "042",
+    "so_mat_sau": 6,
+    "tu_khoa": [
+      "Sư tử",
+      "Sô cô la",
+      "Ví tiền",
+      "Tàu hỏa",
+      "Chim cánh cụt",
+      "Kính râm"
+    ]
+  }
+]

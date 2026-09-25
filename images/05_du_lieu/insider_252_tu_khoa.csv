@@ -1,0 +1,253 @@
+﻿ma_the,so_mat_sau,dong,tu_khoa
+001,1,1,Sấm sét
+001,1,2,Dâu tây
+001,1,3,Kính thiên văn
+001,1,4,Nấu ăn
+001,1,5,Bún bò
+001,1,6,Dưa hấu
+002,1,1,Bạch tuộc
+002,1,2,Bác sĩ
+002,1,3,Cà phê
+002,1,4,Thư viện
+002,1,5,Khăn tắm
+002,1,6,Bể bơi
+003,1,1,Thủy triều
+003,1,2,Cây xương rồng
+003,1,3,Búa
+003,1,4,Ma cà rồng
+003,1,5,Rễ cây
+003,1,6,Gương soi
+004,1,1,Nhà khoa học
+004,1,2,Sở thú
+004,1,3,Nàng tiên cá
+004,1,4,Lều
+004,1,5,Vạn Lý Trường Thành
+004,1,6,Bỏng ngô
+005,1,1,Cà chua
+005,1,2,Chăn
+005,1,3,Quả nho
+005,1,4,Sứa
+005,1,5,Bản đồ
+005,1,6,La bàn
+006,1,1,Chim sẻ
+006,1,2,Trường học
+006,1,3,Tưới cây
+006,1,4,Nồi cơm điện
+006,1,5,Lò vi sóng
+006,1,6,Phù thủy
+007,1,1,Ca sĩ
+007,1,2,Sa mạc
+007,1,3,Trực thăng
+007,1,4,Nông dân
+007,1,5,Sầu riêng
+007,1,6,Phở
+008,2,1,Ủng
+008,2,2,Robot
+008,2,3,Bơi lội
+008,2,4,Bút chì
+008,2,5,Nhảy dây
+008,2,6,Găng tay
+009,2,1,Quả táo
+009,2,2,Tủ lạnh
+009,2,3,Quả cam
+009,2,4,Gỏi cuốn
+009,2,5,Đồng hồ đeo tay
+009,2,6,Cờ vua
+010,2,1,Cầu vồng
+010,2,2,Dây chuyền
+010,2,3,Đèn bàn
+010,2,4,Đấu kiếm
+010,2,5,Quả chuối
+010,2,6,Con chó
+011,2,1,Bông tuyết
+011,2,2,Điện thoại
+011,2,3,Bưu thiếp
+011,2,4,Leo núi
+011,2,5,Họa sĩ
+011,2,6,Sáo
+012,2,1,Áo mưa
+012,2,2,Cầu lông
+012,2,3,Lễ tốt nghiệp
+012,2,4,Vali
+012,2,5,Làm vườn
+012,2,6,Cơm tấm
+013,2,1,Chim công
+013,2,2,Thước kẻ
+013,2,3,Hoa hướng dương
+013,2,4,Giường ngủ
+013,2,5,Vòng tay
+013,2,6,Đánh răng
+014,2,1,Cơn bão
+014,2,2,Con rồng
+014,2,3,Phong bì
+014,2,4,Thợ may
+014,2,5,Hồ Gươm
+014,2,6,Xe cứu thương
+015,3,1,Mặt trời
+015,3,2,Phi công
+015,3,3,Núi lửa
+015,3,4,Nhẫn
+015,3,5,Tết Nguyên đán
+015,3,6,Đàn vi ô lông
+016,3,1,Lễ hội
+016,3,2,Quét nhà
+016,3,3,Chạy bộ
+016,3,4,Tàu ngầm
+016,3,5,Vẽ tranh
+016,3,6,Lược
+017,3,1,Bánh mì
+017,3,2,Lá cây
+017,3,3,Khăn quàng cổ
+017,3,4,Bươm bướm
+017,3,5,Sương mù
+017,3,6,Công viên
+018,3,1,Gió
+018,3,2,Hộ chiếu
+018,3,3,Máy bay
+018,3,4,Đàn ghi ta
+018,3,5,Lính cứu hỏa
+018,3,6,Kem
+019,3,1,Chụp ảnh
+019,3,2,Vịnh Hạ Long
+019,3,3,Rong biển
+019,3,4,Giặt quần áo
+019,3,5,Rạp chiếu phim
+019,3,6,Hạt giống
+020,3,1,Cá ngựa
+020,3,2,Cá mập
+020,3,3,Con ong
+020,3,4,Hoa hồng
+020,3,5,Khinh khí cầu
+020,3,6,Kỳ lân
+021,3,1,Tai nghe
+021,3,2,Chùa Một Cột
+021,3,3,Gói quà
+021,3,4,Hoa sen
+021,3,5,Bắp cải
+021,3,6,Mũ bảo hiểm
+022,4,1,Tài xế
+022,4,2,Con tem
+022,4,3,Con mèo
+022,4,4,Chim gõ kiến
+022,4,5,Cây thông
+022,4,6,Chợ
+023,4,1,Kim tự tháp
+023,4,2,Cá heo
+023,4,3,Rửa bát
+023,4,4,Thợ xây
+023,4,5,Ngư dân
+023,4,6,Phi hành gia
+024,4,1,Bảo tàng
+024,4,2,Cặp sách
+024,4,3,Nước mía
+024,4,4,Thanh long
+024,4,5,Nấm
+024,4,6,Ống nhòm
+025,4,1,Người tuyết
+025,4,2,Giáo viên
+025,4,3,Xà phòng
+025,4,4,Siêu thị
+025,4,5,Nước dừa
+025,4,6,Cây tre
+026,4,1,Thác nước
+026,4,2,Lập trình viên
+026,4,3,Xe buýt
+026,4,4,Bàn phím
+026,4,5,Đầu bếp
+026,4,6,Sữa đậu nành
+027,4,1,Kiến trúc sư
+027,4,2,Ổ khóa
+027,4,3,Cà rốt
+027,4,4,Quả bơ
+027,4,5,Gối
+027,4,6,Con thỏ
+028,4,1,Sữa chua
+028,4,2,Dưa chuột
+028,4,3,Chuồn chuồn
+028,4,4,Máy tính xách tay
+028,4,5,Bệnh viện
+028,4,6,Vệ tinh
+029,5,1,Đèn pin
+029,5,2,Hang động
+029,5,3,Ô tô
+029,5,4,Máy sấy tóc
+029,5,5,Con kiến
+029,5,6,Hoa tai
+030,5,1,Động đất
+030,5,2,Thuyền buồm
+030,5,3,Câu cá
+030,5,4,Trạm vũ trụ
+030,5,5,Bóng bàn
+030,5,6,Chảo
+031,5,1,Quả xoài
+031,5,2,Mưa đá
+031,5,3,Vé tàu
+031,5,4,Hươu cao cổ
+031,5,5,Bóng đá
+031,5,6,Rèm cửa
+032,5,1,Xe đạp
+032,5,2,Trà sữa
+032,5,3,Tủ quần áo
+032,5,4,Nước cam
+032,5,5,Kìm
+032,5,6,Khách sạn
+033,5,1,Kẹo bông
+033,5,2,Bãi biển
+033,5,3,Con nhện
+033,5,4,Vườn bách thảo
+033,5,5,Bánh sinh nhật
+033,5,6,Máy ảnh
+034,5,1,Đũa
+034,5,2,Bảng đen
+034,5,3,Kính lúp
+034,5,4,Khoai tây
+034,5,5,Tháp Eiffel
+034,5,6,Mặt trăng
+035,5,1,Quả dứa
+035,5,2,Trượt băng
+035,5,3,Cú mèo
+035,5,4,Xe cứu hỏa
+035,5,5,Vở học sinh
+035,5,6,Ấm đun nước
+036,6,1,Bắn cung
+036,6,2,Bàn chải đánh răng
+036,6,3,Thợ cắt tóc
+036,6,4,Chìa khóa
+036,6,5,Kèn trumpet
+036,6,6,Xe máy
+037,6,1,Tên lửa
+037,6,2,Rêu
+037,6,3,Đại bàng
+037,6,4,Khu cắm trại
+037,6,5,Diễn viên
+037,6,6,Ti vi
+038,6,1,Đọc sách
+038,6,2,Rùa biển
+038,6,3,Sân bay
+038,6,4,Bưu điện
+038,6,5,Đảo
+038,6,6,Quả dừa
+039,6,1,Nhiếp ảnh gia
+039,6,2,Sinh nhật
+039,6,3,Cục tẩy
+039,6,4,Ốc sên
+039,6,5,Tết Trung thu
+039,6,6,Nhà ga
+040,6,1,Con voi
+040,6,2,Đám cưới
+040,6,3,Đàn piano
+040,6,4,Nhà hàng
+040,6,5,Bánh chưng
+040,6,6,Trống
+041,6,1,Sân vận động
+041,6,2,Bóng rổ
+041,6,3,Kéo
+041,6,4,Tua vít
+041,6,5,Nhật thực
+041,6,6,Bí đỏ
+042,6,1,Sư tử
+042,6,2,Sô cô la
+042,6,3,Ví tiền
+042,6,4,Tàu hỏa
+042,6,5,Chim cánh cụt
+042,6,6,Kính râm
