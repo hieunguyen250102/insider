@@ -53,11 +53,14 @@ import type {
   Winner,
 } from '../../shared/types';
 import { CARDS } from '../../shared/words';
+import { PREDICATE_BY_ID, masterAnswer } from '../../shared/knowledge';
 import * as bot from './bot';
 
 /** A host who has been gone this long hands the table to someone who is here. */
 const HOST_GRACE_MS = 20_000;
 const MAX_QUESTIONS = 240;
+/** A bot Master "reads" a question this long before stamping it. */
+const BOT_MASTER_READ_MS = 1200;
 
 export interface Player {
   id: string;
@@ -198,7 +201,7 @@ export class Room {
       this.settings.qaSeconds = next.qaSeconds;
     }
     if (next.masterMode !== undefined) {
-      if (next.masterMode !== 'rotate' && next.masterMode !== 'random') return 'Cách chọn Quản trò không hợp lệ';
+      if (!['rotate', 'random', 'bot'].includes(next.masterMode)) return 'Cách chọn Quản trò không hợp lệ';
       this.settings.masterMode = next.masterMode;
     }
     this.touch();
@@ -243,8 +246,15 @@ export class Room {
     this.players = this.players.filter((p) => p.isBot || p.connected);
     if (this.players.length < MIN_PLAYERS) return `Cần ít nhất ${MIN_PLAYERS} người chơi`;
     const humans = this.players.filter((p) => !p.isBot).map((p) => p.id);
-    const masterId = pickMaster(humans, this.prevMasterId, this.settings.masterMode, this.rng);
-    if (!masterId) return 'Cần ít nhất một người thật làm Quản trò';
+    const bots = this.players.filter((p) => p.isBot).map((p) => p.id);
+    let masterId: string | undefined;
+    if (this.settings.masterMode === 'bot') {
+      masterId = bots[Math.floor(this.rng() * bots.length)];
+      if (!masterId) return 'Cần ít nhất một bot để làm Quản trò';
+    } else {
+      masterId = pickMaster(humans, this.prevMasterId, this.settings.masterMode, this.rng);
+      if (!masterId) return 'Cần ít nhất một người thật làm Quản trò';
+    }
 
     const ids = this.players.map((p) => p.id);
     const roles = dealRoles(ids, masterId, this.rng);
@@ -305,6 +315,7 @@ export class Room {
     this.enter('qa', this.settings.qaSeconds * 1000);
     r.qaStartedAt = this.phaseStartedAt;
     this.scheduleBots(4000, 7000);
+    r.botNext[r.masterId] = this.phaseStartedAt;
     this.system('Mở mắt! Đồng hồ cát bắt đầu chảy — hãy hỏi Quản trò.');
   }
 
@@ -331,12 +342,14 @@ export class Room {
     const err = this.canQuestion(id);
     if (err) return err;
     const r = this.round!;
-    const text = String(raw ?? '').replace(/\s+/g, ' ').trim().slice(0, 140);
+    // A question from the list is asked word for word, so its answer means one thing.
+    const listed = predicateId ? PREDICATE_BY_ID.get(predicateId) : undefined;
+    const text = listed?.text ?? String(raw ?? '').replace(/\s+/g, ' ').trim().slice(0, 140);
     if (text.length < 2) return 'Câu hỏi ngắn quá';
     const waiting = r.questions.filter((q) => q.playerId === id && q.answer === null).length;
     if (waiting >= MAX_PENDING_ASKS) return 'Chờ Quản trò trả lời câu trước đã';
     const q = this.pushQuestion(id, 'ask', text, null);
-    if (predicateId) r.predicateOf.set(q.id, predicateId);
+    if (listed) r.predicateOf.set(q.id, listed.id);
     return null;
   }
 
@@ -612,12 +625,26 @@ export class Room {
     };
   }
 
+  /** A bot Master answers the oldest open question, one at a time, after a beat. */
+  private botMasterAnswers(now: number): boolean {
+    const r = this.round!;
+    if (now < (r.botNext[r.masterId] ?? Infinity)) return false;
+    const q = r.questions.find((x) => x.answer === null && now - x.at >= BOT_MASTER_READ_MS);
+    if (!q) return false;
+    r.botNext[r.masterId] = now + 800 + this.rng() * 1800;
+    const { answer, predicate } = masterAnswer(r.word, q.text, r.predicateOf.get(q.id));
+    // A typed question the bot understood is as good as one from the list.
+    if (predicate) r.predicateOf.set(q.id, predicate.id);
+    return !this.answer(r.masterId, q.id, answer);
+  }
+
   private botsQA(now: number): boolean {
     const r = this.round!;
+    if (this.find(r.masterId)?.isBot && this.botMasterAnswers(now)) return true;
     const pending = r.questions.filter((q) => q.answer === null).length;
     for (const id of r.ids) {
       const p = this.find(id);
-      if (!p?.isBot || now < (r.botNext[id] ?? Infinity)) continue;
+      if (!p?.isBot || id === r.masterId || now < (r.botNext[id] ?? Infinity)) continue;
       const decision = bot.decideQA({
         view: { questions: r.questions, predicateOf: r.predicateOf },
         role: r.roles[id],

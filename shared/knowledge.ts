@@ -3,9 +3,14 @@
  * written in, and yes/no questions they can ask about them. A question is a
  * predicate: the set of keywords for which a sensible Master says "Có".
  * Humans answer loosely, so the bots treat answers as evidence, not proof.
+ *
+ * A bot Master answers from the same predicates, so it lives in shared/: the
+ * client offers them as one-tap questions and previews how a typed one reads.
  */
 
-import { ALL_WORDS } from '../../shared/words';
+import type { Answer } from './types';
+import { answerMatches, foldText } from './engine';
+import { ALL_WORDS } from './words';
 
 /** The 42 rows of six the kit's word list was written in (images/05_du_lieu/build_insider.py). */
 const GROUPS: Record<string, string[]> = {
@@ -154,6 +159,101 @@ export const PREDICATES: Predicate[] = [
 ];
 
 export const PREDICATE_BY_ID = new Map(PREDICATES.map((p) => [p.id, p]));
+
+/**
+ * Phrases (folded, whole words) that tell a bot Master which predicate a typed
+ * question means. Avoid bare syllables that fold into other words ("dien" is
+ * also "diễn"); where two predicates match, the longer phrase wins.
+ */
+const KEYS: Record<string, string[]> = {
+  animal: ['con vat', 'dong vat', 'loai vat', 'thu vat'],
+  job: ['nghe nghiep', 'lam nghe', 'mot nghe'],
+  person: ['con nguoi', 'mot nguoi', 'la nguoi', 'nguoi that'],
+  food: ['an duoc', 'do an', 'thuc an', 'de an', 'mon an'],
+  drink: ['do uong', 'uong duoc', 'thuc uong', 'de uong'],
+  place: ['dia diem', 'noi chon', 'mot noi', 'mot cho'],
+  vehicle: ['phuong tien', 'di lai', 'giao thong'],
+  electric: ['chay bang dien', 'dung dien', 'can dien', 'do dien', 'thiet bi dien', 'cam dien', 'dien tu'],
+  home: ['trong nha', 'o nha', 'trong gia dinh'],
+  nature: ['thien nhien', 'hien tuong'],
+  weather: ['thoi tiet'],
+  fly: ['bay duoc', 'biet bay', 'bay len', 'bay tren troi'],
+  water: ['nuoc', 'bien', 'song ho'],
+  activity: ['hoat dong', 'viec minh lam', 'hanh dong'],
+  sport: ['the thao'],
+  ball: ['qua bong', 'trai bong', 'choi bong'],
+  chore: ['viec nha'],
+  instrument: ['nhac cu', 'choi nhac'],
+  wear: ['mac duoc', 'deo duoc', 'mac len', 'deo len', 'mac vao', 'deo vao', 'quan ao', 'do mac'],
+  jewel: ['trang suc'],
+  plant: ['cay coi', 'thuc vat', 'hoa la', 'loai cay'],
+  flower: ['loai hoa', 'bong hoa', 'mot hoa'],
+  event: ['dip le', 'su kien', 'ngay le', 'ngay hoi'],
+  space: ['vu tru', 'thien van'],
+  fantasy: ['tuong tuong', 'than thoai', 'co tich', 'khong co that'],
+  fruit: ['trai cay', 'hoa qua'],
+  vegetable: ['rau cu', 'rau', 'loai rau'],
+  dish: ['mon an viet', 'mon viet', 'dac san'],
+  sweet: ['do ngot', 'an vat', 'banh keo', 'ngot'],
+  tropical: ['nhiet doi'],
+  'hand-tool': ['dung cu', 'cam tay', 'cong cu'],
+  school: ['truong hoc', 'hoc sinh', 'hoc tap', 'di hoc'],
+  building: ['toa nha', 'ngoi nha', 'cong trinh'],
+  landmark: ['dia danh', 'noi tieng'],
+  vietnam: ['viet nam'],
+  bird: ['chim', 'loai chim'],
+  underwater: ['duoi nuoc', 'song duoi', 'duoi bien'],
+  bug: ['con trung', 'sau bo', 'nho xiu'],
+  pet: ['thu cung', 'nuoi'],
+  'four-legs': ['bon chan', '4 chan'],
+  paper: ['bang giay', 'tu giay', 'lam giay'],
+  travel: ['du lich'],
+  kitchen: ['bep', 'nha bep', 'trong bep', 'trong nha bep'],
+  bathroom: ['phong tam', 'nha tam', 've sinh'],
+  bed: ['phong ngu', 'di ngu'],
+  metal: ['kim loai', 'bang sat', 'bang thep'],
+  screen: ['man hinh'],
+  wheels: ['banh xe'],
+  big: ['to hon nguoi', 'to hon mot nguoi', 'lon hon nguoi', 'lon hon mot nguoi', 'to lon', 'rat to', 'rat lon'],
+  hot: ['nong'],
+  cold: ['lanh'],
+  art: ['nghe thuat'],
+  night: ['ban dem', 'buoi toi', 'dem'],
+};
+
+const FOLDED_TEXT = new Map(PREDICATES.map((p) => [foldText(p.text), p]));
+
+/** The predicate a typed question asks, or undefined when it is unclear. */
+export function matchQuestion(text: string): Predicate | undefined {
+  const f = foldText(text);
+  const exact = FOLDED_TEXT.get(f);
+  if (exact) return exact;
+  const padded = ` ${f} `;
+  let best: Predicate | undefined;
+  let bestLen = 0;
+  let tied = false;
+  for (const p of PREDICATES) {
+    const len = Math.max(0, ...(KEYS[p.id] ?? []).filter((k) => padded.includes(` ${k} `)).map((k) => k.length));
+    if (!len || len < bestLen) continue;
+    tied = len === bestLen;
+    if (len > bestLen) [best, bestLen] = [p, len];
+  }
+  return tied ? undefined : best;
+}
+
+/**
+ * How a bot Master answers: the keyword named → "Đúng rồi!", another keyword
+ * named → "Không", a predicate → the truth, anything else → "Không biết".
+ */
+export function masterAnswer(word: string, text: string, predicateId?: string): { answer: Answer; predicate?: Predicate } {
+  const known = predicateId ? PREDICATE_BY_ID.get(predicateId) : undefined;
+  if (known) return { answer: known.yes.has(word) ? 'yes' : 'no', predicate: known };
+  if (answerMatches(word, text)) return { answer: 'correct' };
+  if (ALL_WORDS.some((w) => answerMatches(w, text))) return { answer: 'no' };
+  const p = matchQuestion(text);
+  if (p) return { answer: p.yes.has(word) ? 'yes' : 'no', predicate: p };
+  return { answer: 'unknown' };
+}
 
 /** Which group a keyword belongs to, for the bots' small talk. */
 export const GROUP_OF = new Map<string, string>(Object.entries(GROUPS).flatMap(([g, ws]) => ws.map((w) => [w, g] as const)));

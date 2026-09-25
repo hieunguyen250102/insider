@@ -2,12 +2,16 @@
  * The Q&A under the hourglass. Players ask yes/no questions or name a guess;
  * the Master stamps answers (keys 1–4 answer the oldest open question). The
  * same feed, read-only, is what the table argues over in the discussion.
+ * With a bot Master the quick questions come from its predicate list, and a
+ * typed question shows how the bot will read it.
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { Answer, GameState, PrivateState, Question } from '@shared/types';
-import { mentionsKeyword } from '@shared/engine';
+import { answerMatches, mentionsKeyword } from '@shared/engine';
+import { PREDICATES, matchQuestion } from '@shared/knowledge';
+import { ALL_WORDS } from '@shared/words';
 import { GUESS_COOLDOWN_MS } from '@shared/timing';
 import { Avatar } from '../art/Avatar';
 import { Stamp } from '../art/Stamp';
@@ -173,7 +177,14 @@ export function QAFeed({
   );
 }
 
-function Composer({ send, blocked }: { send: Send; blocked: boolean }) {
+/** How a bot Master will read a typed question. */
+function botReading(text: string): string {
+  if (ALL_WORDS.some((w) => answerMatches(w, text))) return 'Bot hiểu: bạn đang gọi tên một từ khóa.';
+  const p = matchQuestion(text);
+  return p ? `Bot hiểu: “${p.text}”` : 'Bot chưa hiểu câu này — có thể đáp “Không biết”. Chọn câu gợi ý cho chắc.';
+}
+
+function Composer({ send, blocked, botMaster, asked }: { send: Send; blocked: boolean; botMaster: boolean; asked: Set<string> }) {
   const [mode, setMode] = useState<'ask' | 'guess'>('ask');
   const [draft, setDraft] = useState('');
   const [coolUntil, setCoolUntil] = useState(0);
@@ -186,16 +197,19 @@ function Composer({ send, blocked }: { send: Send; blocked: boolean }) {
     return () => clearInterval(t);
   }, [coolUntil]);
 
-  const submit = (text = draft) => {
+  const submit = (text = draft, predicateId?: string) => {
     const t = text.trim();
     if (!t || blocked || cooling) return;
     sfx.send();
     if (mode === 'guess') {
       send('qa:guess', { text: t });
       setCoolUntil(Date.now() + GUESS_COOLDOWN_MS);
-    } else send('qa:ask', { text: t });
-    setDraft('');
+    } else send('qa:ask', { text: t, predicateId });
+    if (!predicateId) setDraft('');
   };
+  const quick = botMaster
+    ? PREDICATES.filter((p) => !asked.has(p.text)).map((p) => ({ text: p.text, id: p.id as string | undefined }))
+    : QUICK_ASKS.map((text) => ({ text, id: undefined }));
 
   return (
     <div className="border-t border-ink/10 px-3 pt-2.5 pb-3">
@@ -236,15 +250,15 @@ function Composer({ send, blocked }: { send: Send; blocked: boolean }) {
 
       {mode === 'ask' && (
         <div className="scrollbar-none -mx-3 mb-2 flex gap-1.5 overflow-x-auto px-3">
-          {QUICK_ASKS.map((q) => (
+          {quick.map((q) => (
             <button
-              key={q}
+              key={q.text}
               type="button"
               disabled={blocked}
-              onClick={() => submit(q)}
+              onClick={() => submit(q.text, q.id)}
               className="shrink-0 rounded-full border border-ink/15 bg-white/60 px-2.5 py-0.5 text-xs text-ink-soft transition-colors hover:bg-white disabled:opacity-40"
             >
-              {q}
+              {q.text}
             </button>
           ))}
         </div>
@@ -279,6 +293,9 @@ function Composer({ send, blocked }: { send: Send; blocked: boolean }) {
           {cooling ? `${Math.ceil((coolUntil - Date.now()) / 1000)}s` : mode === 'ask' ? <SendIcon /> : 'Đoán!'}
         </button>
       </form>
+      {botMaster && mode === 'ask' && draft.trim().length >= 2 && (
+        <p className="mt-1.5 truncate text-[11px] text-ink-soft">{botReading(draft)}</p>
+      )}
     </div>
   );
 }
@@ -307,6 +324,8 @@ export function QAPanel({ state, priv, youId, send }: { state: GameState; priv: 
   const role = priv?.role ?? null;
   const me = state.players.find((p) => p.id === youId);
   const waiting = state.questions.filter((q) => q.answer === null).length;
+  const botMaster = !!state.players.find((p) => p.id === state.masterId)?.isBot;
+  const asked = useMemo(() => new Set(state.questions.map((q) => q.text)), [state.questions]);
   const hint =
     role === 'master' ? (
       <>Trả lời từng câu. {waiting > 0 ? <b className="text-vermilion">{waiting} câu đang chờ bạn.</b> : 'Chưa có câu nào chờ.'}</>
@@ -325,7 +344,7 @@ export function QAPanel({ state, priv, youId, send }: { state: GameState; priv: 
       {role === 'master' && priv?.word ? (
         <MasterBar word={priv.word} />
       ) : me?.inRound && role ? (
-        <Composer send={send} blocked={state.phase !== 'qa'} />
+        <Composer send={send} blocked={state.phase !== 'qa'} botMaster={botMaster} asked={asked} />
       ) : null}
     </div>
   );

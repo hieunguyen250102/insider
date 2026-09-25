@@ -24,7 +24,7 @@ import { DISCUSS_MIN_MS, REVEAL, VOTE_MS, VOTE_REVEAL_MS, TIEBREAK_MS } from '..
 import { ALL_WORDS, CARDS } from '../../shared/words';
 import type { Phase } from '../../shared/types';
 import { Room } from '../src/room';
-import { PREDICATE_BY_ID, PREDICATES, unknownWords } from '../src/knowledge';
+import { PREDICATE_BY_ID, PREDICATES, masterAnswer, matchQuestion, unknownWords } from '../../shared/knowledge';
 
 let checks = 0;
 let failures = 0;
@@ -294,6 +294,81 @@ function scripted(opts: { guesserIsInsider: boolean; convict: boolean; vote2?: '
   ok(room.round!.ids.includes('h9'), 'newcomer plays');
 }
 
+/* ---------------------------------------------------------- bot Master */
+
+{
+  for (const p of PREDICATES) eq(matchQuestion(p.text)?.id, p.id, `a listed question reads as itself: ${p.id}`);
+  const typed: [string, string | undefined][] = [
+    ['nó là động vật hả', 'animal'],
+    ['Có ăn được ko?', 'food'],
+    ['no co bay duoc khong', 'fly'],
+    ['Nó có to hơn một người không?', 'big'],
+    ['Có phải đồ dùng trong nhà bếp?', 'kitchen'],
+    ['Nó sống dưới nước à', 'underwater'],
+    ['Diễn viên dùng nó à?', undefined],
+    ['Nó màu gì?', undefined],
+    ['hmm', undefined],
+  ];
+  for (const [text, id] of typed) eq(matchQuestion(text)?.id, id, `typed question “${text}”`);
+
+  eq(masterAnswer('Con mèo', 'x', 'animal').answer, 'yes', 'listed question, true');
+  eq(masterAnswer('Phở', 'x', 'animal').answer, 'no', 'listed question, false');
+  eq(masterAnswer('Con mèo', 'Có phải là con mèo không?').answer, 'correct', 'naming the keyword');
+  eq(masterAnswer('Con mèo', 'Có phải con chó không?').answer, 'no', 'naming another keyword');
+  eq(masterAnswer('Con mèo', 'Nó là động vật à?').answer, 'yes', 'typed question the bot understands');
+  eq(masterAnswer('Con mèo', 'Nó màu gì?').answer, 'unknown', 'a question the bot cannot read');
+  // A phrase one predicate reads must not name a keyword ("Có phải là nước không?").
+  for (const w of ALL_WORDS) {
+    for (const p of PREDICATES) ok(!answerMatches(w, p.text), `“${p.text}” does not name ${w}`);
+  }
+}
+
+{
+  const { room } = table(11, 3);
+  room.setSettings('h0', { masterMode: 'bot' });
+  eq(room.settings.masterMode, 'bot', 'bot Master mode');
+  const alone = table(12, 0, 4).room;
+  alone.setSettings('h0', { masterMode: 'bot' });
+  eq(alone.startRound('h0'), 'Cần ít nhất một bot để làm Quản trò', 'bot Master needs a bot');
+
+  const got = new Set<string>();
+  for (let seed = 1; seed <= 30; seed++) {
+    const t = table(seed, 3);
+    t.room.setSettings('h0', { masterMode: 'bot' });
+    eq(t.room.startRound('h0'), null, 'deal with a bot Master');
+    ok(t.room.round!.masterId.startsWith('b'), 'a bot holds the Master tile');
+    got.add(t.room.round!.roles.h0);
+  }
+  ok(got.has('insider') && got.has('common') && !got.has('master'), `a lone person plays the other roles: ${[...got]}`);
+}
+
+{
+  // The bot Master answers the person's questions in turn.
+  const { room, clock } = table(13, 3);
+  room.setSettings('h0', { masterMode: 'bot' });
+  room.startRound('h0');
+  const r = room.round!;
+  r.word = 'Con mèo';
+  toQA(room, clock);
+  eq(room.ask('h0', 'bị thay', 'animal'), null, 'ask from the list');
+  eq(r.questions.at(-1)!.text, PREDICATE_BY_ID.get('animal')!.text, 'a listed question is asked word for word');
+  room.ask('h0', 'Nó màu gì?');
+  const [listed, odd] = r.questions.slice(-2);
+  for (let i = 0; i < 30 && (listed.answer === null || odd.answer === null); i++) {
+    clock.advance(200);
+    room.tick();
+  }
+  eq(listed.answer, 'yes', 'the bot Master answers from the list');
+  eq(odd.answer, 'unknown', 'and says it does not know otherwise');
+  room.ask('h0', 'Có phải là con mèo không?');
+  for (let i = 0; i < 30 && room.phase === 'qa'; i++) {
+    clock.advance(200);
+    room.tick();
+  }
+  eq(room.phase, 'discussion', 'the bot Master stamps “Đúng rồi!”');
+  eq(r.guesserId, 'h0', 'the asker found it');
+}
+
 /* ------------------------------------------------------ bot-driven rounds */
 
 const phaseOrder: Phase[] = ['reveal', 'qa', 'discussion', 'vote1', 'vote2', 'tiebreak', 'result'];
@@ -311,6 +386,7 @@ for (let seed = 1; seed <= 240; seed++) {
   const bots = 3 + (seed % 5);
   const { room, clock } = table(seed, Math.min(bots, 8 - humans), humans);
   if (seed % 3 === 0) room.setSettings('h0', { qaSeconds: 180 });
+  if (seed % 4 === 0) room.setSettings('h0', { masterMode: 'bot' });
   eq(room.startRound('h0'), null, `deal (seed ${seed})`);
   const r = room.round!;
   let last = phaseOrder.indexOf(room.phase);
@@ -322,7 +398,7 @@ for (let seed = 1; seed <= 240; seed++) {
     room.tick();
 
     // The Master answers bot questions truthfully (mostly), a few seconds late.
-    if (room.phase === 'qa' && steps % 10 === 0) {
+    if (room.phase === 'qa' && steps % 10 === 0 && r.masterId.startsWith('h')) {
       for (const q of r.questions) {
         if (q.answer !== null || clock.now() - q.at < 1500) continue;
         const pid = r.predicateOf.get(q.id);

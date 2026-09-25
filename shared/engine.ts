@@ -26,8 +26,8 @@ export function shuffle<T>(items: T[], rng: () => number): T[] {
 /* ------------------------------------------------------------------ roles */
 
 /**
- * The Master tile. It only goes to people (a bot cannot answer free-form
- * questions): the next one round the table after the last Master, or anyone.
+ * The Master tile among people: the next one round the table after the last
+ * Master, or anyone. (In 'bot' mode the room hands it to a bot instead.)
  */
 export function pickMaster(
   humanIds: string[],

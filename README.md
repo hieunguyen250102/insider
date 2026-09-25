@@ -14,7 +14,8 @@ Bản chơi online **thời gian thực** của board game
   “con mèo” hay “mèo”, “có phải là… không?” đều được hiểu; từ đồng nghĩa thì Quản trò bấm **Đúng rồi!**.
   Quản trò trả lời bằng nút hoặc phím 1–4, có thể sửa con dấu.
 - **Bot** để chơi thử khi thiếu người: bot hỏi theo bộ câu hỏi có sẵn, lọc từ khóa theo câu trả lời,
-  đoán, tán gẫu lúc thảo luận và bỏ phiếu. Bot không làm Quản trò (không trả lời được câu hỏi tự do).
+  đoán, tán gẫu lúc thảo luận và bỏ phiếu. Chọn Quản trò **Bot** thì một bot trả lời: đúng tuyệt đối với câu
+  trong danh sách gợi ý, cố hiểu câu gõ tự do (ô nhập báo trước bot hiểu thế nào), không hiểu thì đáp “Không biết”.
 - **Vào lại được**: F5 hay rớt mạng vẫn quay về đúng ghế, đúng vai. Người mới vào giữa hai ván.
 - **Hình vẽ lại bằng SVG** theo phong cách in lụa của bộ thẻ tự làm (giấy kem, đỏ son, than chì):
   8 nhân vật thám tử, thẻ vai, thẻ từ khóa, đồng hồ cát. Không neon, không phát sáng.
@@ -34,11 +35,11 @@ insider/
 │   ├── types.ts         # kiểu dữ liệu gửi qua socket
 │   ├── engine.ts        # chia vai, rút từ khóa, so khớp câu đoán, kiểm phiếu
 │   ├── timing.ts        # thời lượng từng pha (màn nhắm mắt, biểu quyết…)
-│   └── words.ts         # 42 thẻ × 6 từ — đúng bộ thẻ in trong images/
+│   ├── words.ts         # 42 thẻ × 6 từ — đúng bộ thẻ in trong images/
+│   └── knowledge.ts     # bot biết gì về 252 từ khóa + bot Quản trò
 ├── server/              # Express + Socket.IO — trọng tài
 │   ├── src/room.ts      # một bàn: máy trạng thái của cả ván, bot, chat
 │   ├── src/bot.ts       # bot: hỏi, suy luận, đoán, bỏ phiếu
-│   ├── src/knowledge.ts # bot biết gì về 252 từ khóa
 │   ├── src/auth.ts      # đăng nhập mã email (oink-kit)
 │   ├── src/index.ts     # socket + HTTP + đồng hồ chung
 │   └── test/sim.ts      # kiểm tra luật + 240 ván bot trên đồng hồ giả
@@ -76,6 +77,7 @@ Chưa cấu hình gửi mail thì mã đăng nhập được in ra console của
 Cấu hình thật nằm trong `server/.env` (xem `server/.env.example`; `.env` đã bị `.gitignore` bỏ qua).
 
 Chơi thử một mình: mở bàn → **+ Thêm bot** ba lần → **Chia vai**. Bạn là Quản trò, bot hỏi, bạn trả lời.
+Muốn làm Thường dân hoặc Nội gián thì chọn Quản trò **Bot** trước khi chia vai.
 Muốn thử hai người trên một máy: mở tab thứ hai ở `http://127.0.0.1:5190` (khác origin nên có phiên riêng).
 
 Kiểm tra:

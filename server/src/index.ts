@@ -209,7 +209,9 @@ io.on('connection', (socket: Socket) => {
   socket.on('round:next', () => act((room, id) => room.startRound(id)));
   socket.on('room:lobby', () => act((room, id) => room.backToLobby(id)));
 
-  socket.on('qa:ask', ({ text }: { text?: string } = {}) => act((room, id) => room.ask(id, String(text ?? ''))));
+  socket.on('qa:ask', ({ text, predicateId }: { text?: string; predicateId?: string } = {}) =>
+    act((room, id) => room.ask(id, String(text ?? ''), typeof predicateId === 'string' ? predicateId : undefined)),
+  );
   socket.on('qa:guess', ({ text }: { text?: string } = {}) => act((room, id) => room.guess(id, String(text ?? ''))));
   socket.on('qa:answer', ({ id: qid, answer }: { id?: number; answer?: Answer } = {}) =>
     act((room, id) => room.answer(id, Number(qid), answer as Answer)),

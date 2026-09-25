@@ -18,7 +18,8 @@ export type Answer = 'yes' | 'no' | 'unknown' | 'correct';
 /** 'commons' = the Master and the Commons; 'none' = the hourglass ran out and everyone lost. */
 export type Winner = 'commons' | 'insider' | 'none';
 
-export type MasterMode = 'rotate' | 'random';
+/** 'bot': a bot answers from the predicate list, so a lone person can play the other roles. */
+export type MasterMode = 'rotate' | 'random' | 'bot';
 
 export interface Settings {
   /** length of the Q&A hourglass */

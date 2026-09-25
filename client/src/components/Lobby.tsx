@@ -66,8 +66,10 @@ export function Lobby({ state, youId, onStart, onAddBot, onKick, onAvatar, onSet
   const [copied, setCopied] = useState(false);
   const isHost = state.hostId === youId;
   const me = state.players.find((p) => p.id === youId);
-  const canStart = state.players.length >= MIN_PLAYERS;
   const { qaSeconds, masterMode } = state.settings;
+  const hasBot = state.players.some((p) => p.isBot);
+  const enough = state.players.length >= MIN_PLAYERS;
+  const canStart = enough && (masterMode !== 'bot' || hasBot);
 
   const copy = async () => {
     try {
@@ -148,9 +150,11 @@ export function Lobby({ state, youId, onStart, onAddBot, onKick, onAvatar, onSet
                 + Thêm bot
               </button>
             )}
-            {state.players.some((p) => p.isBot) && (
+            {hasBot && (
               <p className="mt-2 text-[11px] leading-relaxed text-ink-soft">
-                Bot chỉ làm Thường dân hoặc Nội gián — Quản trò luôn là người thật để trả lời câu hỏi.
+                {masterMode === 'bot'
+                  ? 'Một bot làm Quản trò — người thật được làm Thường dân hoặc Nội gián.'
+                  : 'Bot chỉ làm Thường dân hoặc Nội gián — Quản trò là người thật (chọn “Bot” ở thiết lập để đổi).'}
               </p>
             )}
 
@@ -190,17 +194,19 @@ export function Lobby({ state, youId, onStart, onAddBot, onKick, onAvatar, onSet
               ))}
             </div>
             <span className="label mt-3">Quản trò</span>
-            <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+            <div className="mt-1.5 grid grid-cols-3 gap-1.5">
               {(
                 [
-                  ['rotate', 'Lần lượt từng người'],
+                  ['rotate', 'Lần lượt'],
                   ['random', 'Ngẫu nhiên'],
+                  ['bot', 'Bot'],
                 ] as const
               ).map(([mode, label]) => (
                 <button
                   key={mode}
                   type="button"
-                  disabled={!isHost}
+                  disabled={!isHost || (mode === 'bot' && !hasBot && masterMode !== 'bot')}
+                  title={mode === 'bot' ? 'Một bot làm Quản trò, trả lời theo danh sách câu hỏi có sẵn' : undefined}
                   onClick={() => onSettings({ masterMode: mode })}
                   className={`rounded-xl px-2 py-2 text-sm font-semibold transition-colors ${
                     masterMode === mode ? 'bg-ink text-paper' : 'bg-white/60 text-ink-soft hover:bg-white'
@@ -228,7 +234,11 @@ export function Lobby({ state, youId, onStart, onAddBot, onKick, onAvatar, onSet
               }}
               className="btn btn-red w-full text-lg"
             >
-              {canStart ? 'Chia vai — bắt đầu!' : `Cần ít nhất ${MIN_PLAYERS} người (thêm bot nếu thiếu)`}
+              {canStart
+                ? 'Chia vai — bắt đầu!'
+                : enough
+                  ? 'Thêm một bot để làm Quản trò'
+                  : `Cần ít nhất ${MIN_PLAYERS} người (thêm bot nếu thiếu)`}
             </button>
           ) : (
             <div className="display animate-pulse text-center text-sm uppercase tracking-widest text-paper/70">

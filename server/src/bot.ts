@@ -1,14 +1,14 @@
 /**
- * Bots for trying the game with few friends. They never hold the Master
- * tile (nobody can script answers to free-form questions), but as Commons
- * or Insider they ask the questions in knowledge.ts, narrow the keyword down
+ * Bots for trying the game with few friends. They hold the Master tile only
+ * in 'bot' mode (masterAnswer in shared/knowledge.ts); as Commons or Insider
+ * they ask the questions in knowledge.ts, narrow the keyword down
  * from the Master's answers, guess, chat a little and vote.
  */
 
 import type { Question, Role } from '../../shared/types';
 import { answerMatches } from '../../shared/engine';
 import { ALL_WORDS } from '../../shared/words';
-import { PREDICATES, PREDICATE_BY_ID, type Predicate } from './knowledge';
+import { PREDICATES, PREDICATE_BY_ID, type Predicate } from '../../shared/knowledge';
 
 /** How often a human Master is assumed to answer loosely. */
 const EPS = 0.12;
